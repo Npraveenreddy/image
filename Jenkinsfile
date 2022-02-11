@@ -1,22 +1,40 @@
 pipeline {
-     agent any
-     stages {
-         stage('Build') {
-             steps {
-                 sh 'echo "Hello World"'
-                 sh '''
-                     echo "Multiline shell steps works too"
-                     ls -lah
-                 '''
-             }
-         }      
-         stage('Upload to AWS') {
-              steps {
-                  withAWS(region:'us-east-2',credentials:'aws') {
-                  sh 'echo "Uploading content with AWS creds"'
-                      s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'app.py', bucket:'jenkins-s3-bucket-wach')
-                  }
-              }
-         }
-     }
+
+  agent any
+
+  stages {
+
+    stage('Checkout Source') {
+      steps {
+        git branch: "main",
+          // credentialsId: 'aws',
+          url: 'git@github.com:spinningops/website-pipeline-demo.git'
+      }
+    }
+
+    stage('Upload to S3') {
+        steps{
+            script {
+
+                dir(''){
+
+                    pwd(); //Log current directory
+
+                    withAWS(region:'us-east-1',credentials:'aws') {
+
+                        def identity=awsIdentity();//Log AWS credentials
+
+                        // Upload files from working directory '' in your project workspace
+                        s3Upload(bucket:"website.spinningops.com", workingDir:'', includePathPattern:'*/');
+                        // invalidate CloudFront distribution
+                        cfInvalidate(distribution:'E152QNNVYS423', paths:['/*'])
+                    }
+
+                };
+            }
+        }
+    }
+
+  }
+
 }
