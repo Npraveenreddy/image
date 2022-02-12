@@ -1,7 +1,5 @@
-variable "region" {
-    default = "us-east-2"
+resource "aws_s3_bucket_object" "object" {
+  bucket = "terraform-teknobucket1-state"
+  key    = "Dockerfile"
+  source = "C:\\Users\\pnarayana\\Documents\\Dockerfile.txt"
 }
-
-variable "instance_type" {
-    default = "t2.micro"
-} 
