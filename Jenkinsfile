@@ -11,15 +11,7 @@ pipeline {
             }
 
         }
-        stage('Publish to Nexus') {
-            agent { label 'maven' }
-            steps {
-                script {
-                    echo "This is where we publish to Nexus"
-                    module_Artifact.publish()
-                }
-            }
-        }
+        
     }
     post {
         always {
