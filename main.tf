@@ -12,4 +12,4 @@ resource "aws_s3_bucket" "terraform_state_s3" {
   versioning {
          enabled = true
         }
-
+}
