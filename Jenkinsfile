@@ -3,7 +3,7 @@ pipeline {
  
     stages {
         stage('Build and Unit test') {
-            agent { label 'maven' }
+            agent any
             steps {
                 script {
                     module_Maven('clean verify')
