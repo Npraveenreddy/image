@@ -9,11 +9,7 @@ pipeline {
                     module_Maven('clean verify')
                 }
             }
-            post {
-                always {
-                    junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: false
-                }
-            }
+
         }
         stage('Publish to Nexus') {
             agent { label 'maven' }
