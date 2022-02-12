@@ -1,15 +1,28 @@
 pipeline {
-    agent none
- 
+    agent any
     stages {
-        stage('Build and Unit test') {
-            agent any
+        stage('Checkout') {
             steps {
-                script {
-                    module_Maven('clean verify')
-                }
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Npraveenreddy/image.git']]])
+                
             }
+            
+        }
+        stage ("terraform init") {
+            steps{
+                sh ("terraform init")
+                
+            }
+            
+        }
 
+        stage ("terraform Action") {
+            steps {
+                echo "Terraform action is -->${action}"
+                sh ('Terraform ${action}--auto-approve')
+                
+            }
+            
         }
         
     }
