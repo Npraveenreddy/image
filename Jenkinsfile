@@ -13,11 +13,5 @@ pipeline {
         }
         
     }
-    post {
-        always {
-            script {
-                module_Notification.sendEmail(currentBuild.result)
-            }
-        }
-    }
+    
 }
