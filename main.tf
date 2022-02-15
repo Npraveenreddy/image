@@ -3,8 +3,12 @@ provider "aws" {
   access_key = "AKIATIB5K2VXSX3F3TO5"
   secret_key = "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"
 }
-#1 -this will create a S3 bucket in AWS
-resource "aws_s3_bucket" "terraform_state_s3" {
-  #make sure you give unique bucket name
-  bucket = "terraform-teknobucket1-state" 
+terraform {
+  backend "s3" {
+    bucket  = "delete-1"
+    key     = "mykey/terraform.tfstate"
+    region  = "us-east-2"
+    encrypt = true
+  }
 }
+
